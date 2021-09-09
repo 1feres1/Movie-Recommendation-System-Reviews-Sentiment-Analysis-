@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 import urllib
 import  os
 import pickle as pk
@@ -8,7 +9,7 @@ from tmdbv3api import TMDb, Movie
 import requests
 # Create your views here.
 tmdb = TMDb()
-tmdb.api_key = '0ea768ec7061eda7b3afef743666005e'
+tmdb.api_key = settings.TMDB_KEY
 
 
 movie = Movie()
@@ -16,6 +17,7 @@ movie = Movie()
 
 
 def search_view(request ) :
+    print("hhhhhhhhhh" , settings.TMDB_KEY)
 
 
 
@@ -29,11 +31,12 @@ def search_view(request ) :
         else :
                 loaded_model = pk.load(open('./nlp/sentiment_model.pkl', 'rb'))
                 vectorizer = pk.load(open("./nlp/tranform.pkl", 'rb'))
-                response = requests.get('https://api.themoviedb.org/3/movie/'+str(movies[0].id)+'/credits?api_key=0ea768ec7061eda7b3afef743666005e')
+
+                response = requests.get('https://api.themoviedb.org/3/movie/'+str(movies[0].id)+'/credits?api_key='+settings.TMDB_KEY)
                 casts = response.json()['cast']
 
                 response1 = requests.get(
-                    'https://api.themoviedb.org/3/movie/'+str(movies[0].id)+'?api_key=0ea768ec7061eda7b3afef743666005e')
+                    'https://api.themoviedb.org/3/movie/'+str(movies[0].id)+'?api_key='+settings.TMDB_KEY)
                 movie_result = response1.json()
                 imdb_id = movie_result['imdb_id']
                 sauce = urllib.request.urlopen(
@@ -70,7 +73,7 @@ def main_view(request ) :
 
 
 def api(request):
-    response = requests.get('https://api.themoviedb.org/3/movie/3131?api_key=0ea768ec7061eda7b3afef743666005e')
+    response = requests.get('https://api.themoviedb.org/3/movie/3131?api_key='+settings.TMDB_KEY)
     geodata = response.json()
     return render(request, 'mrs/api.html', {'cast' : geodata['imdb_id']
     })
@@ -84,7 +87,7 @@ def test(request) :
 
 
 def reviews(request) :
-    a = 'https://api.themoviedb.org/3/movie/3131?api_key=0ea768ec7061eda7b3afef743666005e'
+    a = 'https://api.themoviedb.org/3/movie/3131?api_key='+settings.TMDB_KEY
     response = requests.get(a)
     response = requests.get(a)
     movie = response.json()
