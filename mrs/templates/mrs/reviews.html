@@ -1,0 +1,8 @@
+{% extends 'mrs/base.html' %}
+
+{% block content %}
+<center><h1>Movie Reviews</h1></center>
+{% for s in soup %}<p style="color : white"> {{s}}</p>{% endfor%}
+
+{% endblock %}
+

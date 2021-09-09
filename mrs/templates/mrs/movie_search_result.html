@@ -1,0 +1,140 @@
+{% extends 'mrs/base.html' %}
+{% load mrs_extras %}
+
+{% block content %}
+<center>
+            <br>
+            <h1> Search Result</h1>
+</center>
+            <br/>
+    {% if searched %}
+            {% if test %}
+
+<center>
+    <div >
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img height= "400" width="250"   src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body" align="left">
+
+            <h5 >TITLE: {{movie.original_title}}</h5><br/>
+            <h6 style="color:white;max-width: 85%"  >OVERVIEW: <br/><br/>{{movie.overview}}</h6><br/>
+            <h6  s>RATING: {{movie.vote_average}}/10 </h6><br/>
+            <h6 >GENRE: {%for genre in movie.genres %} {{genre.name}}{%endfor%}</h6><br/>
+            <h6  >RELEASE DATE: {{movie.release_date}}</h6>  
+      </div>
+    </div>
+  </div>
+</div>
+</center>
+
+
+
+
+
+
+
+
+
+<br>
+                        <div class="allcards">
+
+                            <div class="card-group">
+                            {%for cast in casts.g1%}
+      <div class="card">
+
+        <h5 class="card-title">{{cast.original_name}}</h5>
+        <img src="https://image.tmdb.org/t/p/w500{{cast.profile_path}}" class="card-img-top" alt="W3Schools.com" width="50" height="300">
+        <div class="card-body">
+
+            <a href="#" class="btn btn-primary">details</a>
+
+
+        </div>
+      </div>
+                            {%endfor%} </div>
+
+                        <div class="card-group">
+                            {%for cast in casts.g2%}
+      <div class="card">
+
+        <h5 class="card-title">{{cast.original_name}}</h5>
+        <img src="https://image.tmdb.org/t/p/w500{{cast.profile_path}}" class="card-img-top" alt="mysite/mrs/static/mrs/images/not_found.jpeg" width="50" height="300">
+        <div class="card-body">
+
+            <a href="#" class="btn btn-primary">details</a>
+
+
+        </div>
+      </div>
+                            {%endfor%} </div>
+
+                        </div>
+
+<br>
+<h2 style="color : white ">Reviews</h2>
+
+<table style="color : white " class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">review</th>
+      <th scope="col">Sentiments</th>
+
+    </tr>
+  </thead>
+  <tbody>
+  {%for i , review in all_reviews.items %}
+     <tr>
+      <th scope="row">{{i}}</th>
+      <td>{{review.text}}</td>
+      <td>{% if review.pred == 0 %}
+          <p>Negative &#x1F625;</p>
+          {% elif review.pred == 1 %}
+          <p>Positive &#x1F604;</p>
+          {%endif%}
+
+      </td>
+    </tr>
+
+  {%endfor%}
+
+  </tbody>
+</table>
+
+<h2> Semilar movie </h2>
+<div class="allcards">
+
+                            <div class="card-group">
+                            {%for movie in semilar%}
+      <div class="card">
+
+        <h5 style="color : black" class="card-title">{{movie.original_title}}</h5>
+        <img src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}" class="card-img-top" alt="mysite/mrs/static/mrs/images/not_found.jpeg" width="50" height="300">
+
+      </div>
+                            {%endfor%} </div>
+
+
+
+                        </div>
+
+
+
+
+
+    </center>
+
+                    {%else%}
+                    <h2>No corresponding movie for {{searched}} </h2>
+            {%endif%}
+            {%else%}
+            <h2>You didn't type any search </h2>
+    {%endif%}
+
+
+    </center>
+
+{% endblock %}
